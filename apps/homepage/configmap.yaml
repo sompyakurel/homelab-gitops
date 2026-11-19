@@ -30,7 +30,7 @@ data:
       <div class="sub">Witch Hazel Data Centre — Canal Winchester, Ohio</div>
       <div class="clock" id="clock"></div>
       <div class="grid">
-        <a class="door" href="https://192.168.1.10:8006"><b>Proxmox</b><span>The hypervisor</span></a>
+        <a class="door" href="https://100.120.220.32:8006"><b>Proxmox</b><span>The hypervisor</span></a>
         <a class="door" href="http://192.168.1.21:30030"><b>Grafana</b><span>Cluster vital signs</span></a>
         <a class="door" href="http://192.168.1.21:30080"><b>Demo App</b><span>The first workload</span></a>
         <a class="door" href="https://gharlearn.com"><b>Ghar</b><span>Learn Nepali</span></a>
