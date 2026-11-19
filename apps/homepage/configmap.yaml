@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Witch Hazel Data Centre</title>
+    <style>
+      body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#0b1220; color:#e8eef7; display:flex; justify-content:center; }
+      main { max-width:560px; width:100%; padding:28px 20px 40px; }
+      .greet { font-size:34px; font-weight:700; }
+      .sub { color:#93a5bd; margin-top:4px; }
+      .clock { font-size:15px; color:#c8d6ea; margin-top:10px; letter-spacing:1px; }
+      .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:26px; }
+      a.door { display:block; background:#14213a; border:1px solid #22355a; border-radius:14px; padding:16px; color:#e8eef7; text-decoration:none; }
+      a.door b { font-size:17px; display:block; }
+      a.door span { color:#93a5bd; font-size:13px; }
+      .facts { margin-top:26px; background:#101b30; border-radius:14px; padding:14px 16px; color:#c8d6ea; font-size:14px; line-height:1.9; }
+      footer { margin-top:22px; color:#5f728c; font-size:12px; text-align:center; line-height:1.7; }
+    </style>
+    </head>
+    <body>
+    <main>
+      <div class="greet"><span id="greet">नमस्ते</span>, Som</div>
+      <div class="sub">Witch Hazel Data Centre — Canal Winchester, Ohio</div>
+      <div class="clock" id="clock"></div>
+      <div class="grid">
+        <a class="door" href="https://192.168.1.10:8006"><b>Proxmox</b><span>The hypervisor</span></a>
+        <a class="door" href="http://192.168.1.21:30030"><b>Grafana</b><span>Cluster vital signs</span></a>
+        <a class="door" href="http://192.168.1.21:30080"><b>Demo App</b><span>The first workload</span></a>
+        <a class="door" href="https://gharlearn.com"><b>Ghar</b><span>Learn Nepali</span></a>
+      </div>
+      <div class="facts">
+        3 nodes Ready — master · worker1 · worker2<br>
+        Kubernetes — k3s v1.37.2<br>
+        Deployed by ArgoCD, from git<br>
+        Est. November 2026 — one N100, 16 GB of ambition
+      </div>
+      <footer>This page is a git commit.<br>If it ever breaks, ArgoCD puts it back.</footer>
+    </main>
+    <script>
+      function tick() {
+        var d = new Date(), h = d.getHours();
+        var g = h < 12 ? 'शुभ प्रभात' : (h < 17 ? 'नमस्ते' : (h < 21 ? 'शुभ सन्ध्या' : 'शुभ रात्रि'));
+        document.getElementById('greet').textContent = g;
+        document.getElementById('clock').textContent = d.toLocaleString();
+      }
+      tick(); setInterval(tick, 1000);
+    </script>
+    </body>
+    </html>
