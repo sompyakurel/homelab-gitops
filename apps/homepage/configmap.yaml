@@ -35,6 +35,7 @@ data:
         <a class="door" href="http://192.168.1.21:30080"><b>Demo App</b><span>The first workload</span></a>
         <a class="door" href="https://gharlearn.com"><b>Ghar</b><span>Learn Nepali</span></a>
         <a class="door" href="http://192.168.1.21:30095"><b>Status</b><span>Uptime Kuma's watch</span></a>
+        <a class="door" href="http://192.168.1.24:2283"><b>Photos</b><span>The family archive</span></a>
       </div>
       <div class="facts">
         3 nodes Ready — master · worker1 · worker2<br>
