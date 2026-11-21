@@ -11,36 +11,154 @@ data:
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Witch Hazel Data Centre</title>
     <style>
-      body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; background:#0b1220; color:#e8eef7; display:flex; justify-content:center; }
-      main { max-width:560px; width:100%; padding:28px 20px 40px; }
+      :root { --ink:#e8eef7; --dim:#93a5bd; --faint:#5f728c; }
+      body[data-scene="night"] { --accent:#7aa2f7; --accent2:#2c3a5e; --glow:rgba(122,162,247,.20); }
+      body[data-scene="dawn"]  { --accent:#f5a97f; --accent2:#6e4258; --glow:rgba(245,169,127,.22); }
+      body[data-scene="day"]   { --accent:#4cc3ff; --accent2:#175d78; --glow:rgba(76,195,255,.18); }
+      body[data-scene="dusk"]  { --accent:#f0876f; --accent2:#54386b; --glow:rgba(240,135,111,.22); }
+      * { box-sizing:border-box; }
+      body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; color:var(--ink);
+             background: radial-gradient(120% 55% at 50% -5%, var(--glow), rgba(0,0,0,0) 60%), linear-gradient(180deg,#0d1526 0%,#0a0f1c 55%,#080d18 100%);
+             min-height:100vh; display:flex; justify-content:center; }
+      main { max-width:640px; width:100%; padding:28px 20px 44px; }
       .greet { font-size:34px; font-weight:700; }
-      .sub { color:#93a5bd; margin-top:4px; }
+      .greet .accent { color:var(--accent); }
+      .sub { color:var(--dim); margin-top:4px; }
       .clock { font-size:15px; color:#c8d6ea; margin-top:10px; letter-spacing:1px; }
-      .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:26px; }
-      a.door { display:block; background:#14213a; border:1px solid #22355a; border-radius:14px; padding:16px; color:#e8eef7; text-decoration:none; }
-      a.door b { font-size:17px; display:block; }
-      a.door span { color:#93a5bd; font-size:13px; }
-      .facts { margin-top:26px; background:#101b30; border-radius:14px; padding:14px 16px; color:#c8d6ea; font-size:14px; line-height:1.9; }
-      footer { margin-top:22px; color:#5f728c; font-size:12px; text-align:center; line-height:1.7; }
+      .scene { font-size:12px; color:var(--faint); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+      .cmd { margin-top:24px; display:flex; align-items:center; gap:10px; background:rgba(20,33,58,.55);
+             border:1px solid rgba(255,255,255,.09); border-radius:14px; padding:12px 14px;
+             backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+      .cmd svg { flex:0 0 auto; stroke:var(--dim); }
+      .cmd input { flex:1; background:none; border:none; outline:none; color:var(--ink); font-size:16px; }
+      .cmd input::placeholder { color:var(--faint); }
+      .cmd kbd { color:var(--faint); border:1px solid rgba(255,255,255,.14); border-bottom-width:2px; border-radius:6px;
+                 padding:1px 7px; font-size:12px; font-family:inherit; }
+      .nomatch { display:none; color:var(--faint); font-size:14px; margin-top:14px; text-align:center; }
+      .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+      a.door { position:relative; display:block; padding:16px; color:var(--ink); text-decoration:none; border-radius:16px;
+               background:linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+               border:1px solid rgba(255,255,255,.10); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+               transition:border-color .2s, transform .15s; }
+      a.door:hover, a.door:active { border-color:var(--accent); transform:translateY(-1px); }
+      a.door .icon { width:26px; height:26px; stroke:var(--accent); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+      a.door b { font-size:17px; display:block; margin-top:9px; }
+      a.door span { color:var(--dim); font-size:13px; }
+      .dot { position:absolute; top:14px; right:14px; width:10px; height:10px; border-radius:50%;
+             background:#5f728c; box-shadow:0 0 0 3px rgba(255,255,255,.05); }
+      .dot.up { background:#3fb96f; box-shadow:0 0 8px rgba(63,185,111,.8); }
+      .dot.down { background:#e5534b; box-shadow:0 0 8px rgba(229,83,75,.9); animation:pulse 1.6s infinite; }
+      .dot.pending { background:#e8a33d; box-shadow:0 0 8px rgba(232,163,61,.8); }
+      .dot.maint { background:#58a6ff; box-shadow:0 0 8px rgba(88,166,255,.8); }
+      .dot.unknown { background:#5f728c; }
+      @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.45; } }
+      .panel { margin-top:22px; border-radius:16px; padding:16px;
+               background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+               border:1px solid rgba(255,255,255,.09); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+      .panel h2 { margin:0 0 10px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--faint); font-weight:600; }
+      .panel svg text { font-family:-apple-system,'Segoe UI',Roboto,sans-serif; }
+      .facts { line-height:1.9; color:#c8d6ea; font-size:14px; }
+      footer { margin-top:22px; color:var(--faint); font-size:12px; text-align:center; line-height:1.7; }
     </style>
     </head>
-    <body>
+    <body data-scene="night">
     <main>
-      <div class="greet"><span id="greet">नमस्ते</span>, Som</div>
+      <div class="greet"><span id="greet" class="accent">नमस्ते</span>, Som</div>
       <div class="sub">Witch Hazel Data Centre — Canal Winchester, Ohio</div>
       <div class="clock" id="clock"></div>
-      <div class="grid">
-        <a class="door" href="https://100.120.220.32:8006"><b>Proxmox</b><span>The hypervisor</span></a>
-        <a class="door" href="http://192.168.1.21:30030"><b>Grafana</b><span>Cluster vital signs</span></a>
-        <a class="door" href="http://192.168.1.21:30080"><b>Demo App</b><span>The first workload</span></a>
-        <a class="door" href="https://gharlearn.com"><b>Ghar</b><span>Learn Nepali</span></a>
-        <a class="door" href="http://192.168.1.21:30095"><b>Status</b><span>Uptime Kuma's watch</span></a>
-        <a class="door" href="http://192.168.1.24:2283"><b>Photos</b><span>The family archive</span></a>
+      <div class="scene" id="scene"></div>
+
+      <div class="cmd">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="cmd" type="text" placeholder="Jump to a door — try &lsquo;photos&rsquo;" autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
       </div>
-      <div class="facts">
+      <div class="nomatch" id="nomatch">No door by that name in this house.</div>
+
+      <div class="grid" id="grid">
+        <a class="door" href="https://100.120.220.32:8006" data-name="Proxmox" data-keys="proxmox pve hypervisor host virtual machines vms">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><circle cx="7.2" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="7.2" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <i class="dot unknown" data-door="proxmox" title="Checking status…"></i>
+          <b>Proxmox</b><span>The hypervisor</span>
+        </a>
+        <a class="door" href="http://192.168.1.21:30030" data-name="Grafana" data-keys="grafana metrics prometheus charts vitals graphs">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 21v-7"/><path d="M11 21V5"/><path d="M16 21v-10"/><path d="M21 21v-13"/></svg>
+          <i class="dot unknown" data-door="grafana" title="Checking status…"></i>
+          <b>Grafana</b><span>Cluster vital signs</span>
+        </a>
+        <a class="door" href="http://192.168.1.21:30080" data-name="Demo App" data-keys="demo app nginx workload test">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>
+          <b>Demo App</b><span>The first workload</span>
+        </a>
+        <a class="door" href="https://gharlearn.com" data-name="Ghar" data-keys="ghar nepali learn language kids school">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 11 12 3l9 8"/><path d="M5.5 9.5V21h13V9.5"/><path d="M10 21v-6h4v6"/></svg>
+          <i class="dot unknown" data-door="ghar" title="Checking status…"></i>
+          <b>Ghar</b><span>Learn Nepali</span>
+        </a>
+        <a class="door" href="http://192.168.1.21:30095" data-name="Status" data-keys="status uptime kuma monitors health">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6.5 4.5 13L16.5 12H21"/></svg>
+          <i class="dot unknown" data-door="status" title="Checking status…"></i>
+          <b>Status</b><span>Uptime Kuma's watch</span>
+        </a>
+        <a class="door" href="http://192.168.1.24:2283" data-name="Photos" data-keys="photos immich pictures archive family backup">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16.5 16 11.5 5 19"/></svg>
+          <i class="dot unknown" data-door="photos" title="Checking status…"></i>
+          <b>Photos</b><span>The family archive</span>
+        </a>
+      </div>
+
+      <div class="panel">
+        <h2>The Estate</h2>
+        <svg viewBox="0 0 600 356" width="100%" role="img" aria-label="Map of the Witch Hazel estate">
+          <rect x="16" y="14" width="140" height="42" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+          <text x="86" y="33" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e8eef7">Internet</text>
+          <text x="86" y="48" text-anchor="middle" font-size="10" fill="#93a5bd">the world</text>
+          <rect x="228" y="14" width="170" height="42" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+          <text x="313" y="33" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e8eef7">AT&amp;T Gateway</text>
+          <text x="313" y="48" text-anchor="middle" font-size="10" fill="#93a5bd">192.168.1.254</text>
+          <a href="https://gharlearn.com">
+            <rect x="444" y="14" width="140" height="42" rx="12" fill="rgba(255,255,255,.04)" stroke="var(--accent)" stroke-opacity=".45"/>
+            <text x="514" y="33" text-anchor="middle" font-size="12.5" font-weight="600" fill="#e8eef7">Ghar</text>
+            <text x="514" y="48" text-anchor="middle" font-size="10" fill="#93a5bd">AWS · Fly.io</text>
+          </a>
+          <path d="M156 35 H228" stroke="rgba(255,255,255,.25)"/>
+          <path d="M398 35 H444" stroke="rgba(255,255,255,.25)" stroke-dasharray="4 4"/>
+          <path d="M313 56 V92" stroke="rgba(255,255,255,.25)"/>
+          <rect x="36" y="92" width="528" height="248" rx="16" fill="rgba(255,255,255,.02)" stroke="var(--accent)" stroke-opacity=".45"/>
+          <a href="https://100.120.220.32:8006">
+            <text x="56" y="119" font-size="12" letter-spacing="2" fill="#e8eef7" font-weight="600">BEELINK N100 — PVE · 192.168.1.10</text>
+          </a>
+          <a href="http://192.168.1.21:30030">
+            <rect x="56" y="132" width="286" height="118" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+            <text x="72" y="157" font-size="13" font-weight="600" fill="#e8eef7">k3s cluster — three VMs</text>
+            <rect x="72" y="168" width="76" height="26" rx="8" fill="rgba(255,255,255,.06)"/>
+            <text x="110" y="185" text-anchor="middle" font-size="10.5" fill="#c8d6ea">101 master</text>
+            <rect x="156" y="168" width="84" height="26" rx="8" fill="rgba(255,255,255,.06)"/>
+            <text x="198" y="185" text-anchor="middle" font-size="10.5" fill="#c8d6ea">102 worker1</text>
+            <rect x="248" y="168" width="84" height="26" rx="8" fill="rgba(255,255,255,.06)"/>
+            <text x="290" y="185" text-anchor="middle" font-size="10.5" fill="#c8d6ea">103 worker2</text>
+            <text x="72" y="223" font-size="11" fill="#93a5bd">Grafana · Demo App · Kuma · this page</text>
+          </a>
+          <a href="http://192.168.1.24:2283">
+            <rect x="358" y="132" width="186" height="54" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+            <text x="374" y="157" font-size="13" font-weight="600" fill="#e8eef7">CT 104 — Immich</text>
+            <text x="374" y="175" font-size="10.5" fill="#93a5bd">Photos · 192.168.1.24</text>
+          </a>
+          <rect x="358" y="198" width="186" height="52" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
+          <text x="374" y="221" font-size="13" font-weight="600" fill="#e8eef7">USB Vault</text>
+          <text x="374" y="239" font-size="10.5" fill="#93a5bd">restic · nightly 03:00</text>
+          <rect x="56" y="262" width="488" height="52" rx="12" fill="none" stroke="rgba(255,255,255,.22)" stroke-dasharray="5 5"/>
+          <text x="72" y="286" font-size="13" font-weight="600" fill="#e8eef7">Night-watchman</text>
+          <text x="72" y="304" font-size="10.5" fill="#93a5bd">15 checks · every 30 minutes · reports by exception only</text>
+        </svg>
+      </div>
+
+      <div class="panel facts">
         3 nodes Ready — master · worker1 · worker2<br>
         Kubernetes — k3s v1.37.2<br>
         Deployed by ArgoCD, from git<br>
+        Photos sleep in an encrypted vault — backed up nightly at 03:00<br>
+        A night-watchman walks the grounds every 30 minutes<br>
         Est. November 2026 — one N100, 16 GB of ambition
       </div>
       <footer>This page is a git commit.<br>If it ever breaks, ArgoCD puts it back.</footer>
@@ -51,8 +169,98 @@ data:
         var g = h < 12 ? 'शुभ प्रभात' : (h < 17 ? 'नमस्ते' : (h < 21 ? 'शुभ सन्ध्या' : 'शुभ रात्रि'));
         document.getElementById('greet').textContent = g;
         document.getElementById('clock').textContent = d.toLocaleString();
+        var scene = (h >= 5 && h < 9) ? 'dawn' : (h >= 9 && h < 17) ? 'day' : (h >= 17 && h < 21) ? 'dusk' : 'night';
+        if (document.body.dataset.scene !== scene) document.body.dataset.scene = scene;
+        document.getElementById('scene').textContent = '· ' + scene + ' over Witch Hazel ·';
       }
       tick(); setInterval(tick, 1000);
+
+      var cmd = document.getElementById('cmd');
+      var doors = Array.prototype.slice.call(document.querySelectorAll('a.door'));
+      var nomatch = document.getElementById('nomatch');
+      function filterDoors() {
+        var q = cmd.value.trim().toLowerCase(), shown = 0;
+        doors.forEach(function (a) {
+          var hay = (a.dataset.name + ' ' + (a.dataset.keys || '')).toLowerCase();
+          var hit = !q || hay.indexOf(q) !== -1;
+          a.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        nomatch.style.display = shown ? 'none' : 'block';
+        return shown;
+      }
+      cmd.addEventListener('input', filterDoors);
+      cmd.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          var first = doors.filter(function (a) { return a.style.display !== 'none'; })[0];
+          if (first) location.href = first.href;
+        } else if (e.key === 'Escape') { cmd.value = ''; filterDoors(); cmd.blur(); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && document.activeElement !== cmd) { e.preventDefault(); cmd.focus(); }
+      });
+
+      var DOORS = { proxmox: ['Proxmox'], grafana: ['Grafana'],
+                    ghar: ['Ghar website', 'Ghar backend'], photos: ['Photos'] };
+      var RANK = { 0: 0, 2: 1, 3: 2, 1: 3 };
+      var CLS = { 0: 'down', 1: 'up', 2: 'pending', 3: 'maint' };
+      function setDot(door, cls, title) {
+        var d = document.querySelector('.dot[data-door="' + door + '"]');
+        if (!d) return;
+        d.className = 'dot ' + cls; d.title = title;
+      }
+      function latestBeat(list) {
+        var best = null;
+        (list || []).forEach(function (b) { if (!best || b.time > best.time) best = b; });
+        return best;
+      }
+      function lights() {
+        fetch('/kuma-api/status-page/witch-hazel').then(function (r) { return r.json(); }).then(function (cfg) {
+          var byName = {};
+          (cfg.publicGroupList || []).forEach(function (g) {
+            (g.monitorList || []).forEach(function (m) { byName[m.name] = m.id; });
+          });
+          return fetch('/kuma-api/status-page/heartbeat/witch-hazel').then(function (r) { return r.json(); }).then(function (hb) {
+            setDot('status', 'up', 'Uptime Kuma is answering');
+            Object.keys(DOORS).forEach(function (door) {
+              var worst = null, worstName = '';
+              DOORS[door].forEach(function (name) {
+                var id = byName[name];
+                if (id == null) return;
+                var beat = latestBeat(hb.heartbeatList && hb.heartbeatList[id]);
+                if (!beat) return;
+                if (worst === null || RANK[beat.status] < RANK[worst]) { worst = beat.status; worstName = name; }
+              });
+              if (worst === null) setDot(door, 'unknown', 'No word from Kuma yet');
+              else if (worst === 1) setDot(door, 'up', DOORS[door].join(' + ') + ' — up');
+              else setDot(door, CLS[worst], worstName + ' — ' + (worst === 0 ? 'DOWN' : worst === 2 ? 'pending' : 'maintenance'));
+            });
+          });
+        }).catch(function () {
+          setDot('status', 'down', 'Uptime Kuma is unreachable');
+          Object.keys(DOORS).forEach(function (door) { setDot(door, 'unknown', 'Status unknown — Kuma unreachable'); });
+        });
+      }
+      lights(); setInterval(lights, 30000);
     </script>
     </body>
     </html>
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name _;
+        root /usr/share/nginx/html;
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+
+        location /kuma-api/ {
+            proxy_pass http://uptime-kuma.uptime-kuma.svc.cluster.local:3001/api/;
+            proxy_http_version 1.1;
+            proxy_set_header Host $host;
+            proxy_connect_timeout 5s;
+            proxy_read_timeout 10s;
+        }
+    }
