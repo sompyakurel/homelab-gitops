@@ -11,25 +11,46 @@ data:
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Witch Hazel Data Centre</title>
     <style>
-      :root { --ink:#e8eef7; --dim:#93a5bd; --faint:#5f728c; }
+      :root { --ink:#e8eef7; --dim:#93a5bd; --faint:#5f728c; --stars:.85; }
       body[data-scene="night"] { --accent:#7aa2f7; --glow:rgba(122,162,247,.20);
         --bgA:#0d1526; --bgB:#0a0f1c; --bgC:#080d18; --glassA:rgba(255,255,255,.07); --glassB:rgba(255,255,255,.02);
         --border:rgba(255,255,255,.10); --fieldbg:rgba(20,33,58,.55); --clock:#c8d6ea; --facts:#c8d6ea; }
-      body[data-scene="dawn"] { --accent:#f5a97f; --glow:rgba(245,169,127,.25); --ink:#f9efea; --dim:#cfa9a0; --faint:#8a6a68;
+      body[data-scene="dawn"] { --accent:#f5a97f; --glow:rgba(245,169,127,.25); --ink:#f9efea; --dim:#cfa9a0; --faint:#8a6a68; --stars:.35;
         --bgA:#241722; --bgB:#1a1119; --bgC:#120b12; --glassA:rgba(255,255,255,.07); --glassB:rgba(255,255,255,.02);
         --border:rgba(255,255,255,.10); --fieldbg:rgba(46,26,40,.55); --clock:#ecd9d2; --facts:#ecd9d2; }
-      body[data-scene="day"] { --accent:#0284c7; --glow:rgba(56,160,230,.20); --ink:#17263c; --dim:#4c637c; --faint:#8496ab;
+      body[data-scene="day"] { --accent:#0284c7; --glow:rgba(56,160,230,.20); --ink:#17263c; --dim:#4c637c; --faint:#8496ab; --stars:0;
         --bgA:#e8f1f9; --bgB:#f4f8fc; --bgC:#e2ecf6; --glassA:rgba(255,255,255,.65); --glassB:rgba(255,255,255,.35);
         --border:rgba(23,38,60,.14); --fieldbg:rgba(255,255,255,.65); --clock:#33475e; --facts:#33475e; }
-      body[data-scene="dusk"] { --accent:#f0876f; --glow:rgba(240,135,111,.24); --ink:#f6ece7; --dim:#c2a49b; --faint:#7d6470;
+      body[data-scene="dusk"] { --accent:#f0876f; --glow:rgba(240,135,111,.24); --ink:#f6ece7; --dim:#c2a49b; --faint:#7d6470; --stars:.5;
         --bgA:#1d1426; --bgB:#150f1e; --bgC:#0f0a16; --glassA:rgba(255,255,255,.07); --glassB:rgba(255,255,255,.02);
         --border:rgba(255,255,255,.10); --fieldbg:rgba(40,24,48,.55); --clock:#e8d5cc; --facts:#e8d5cc; }
       * { box-sizing:border-box; }
       body { margin:0; font-family:-apple-system,'Segoe UI',Roboto,sans-serif; color:var(--ink);
              background: radial-gradient(120% 55% at 50% -5%, var(--glow), rgba(0,0,0,0) 60%), linear-gradient(180deg, var(--bgA) 0%, var(--bgB) 55%, var(--bgC) 100%);
              min-height:100vh; display:flex; justify-content:center; }
-      main { max-width:640px; width:100%; padding:28px 20px 44px; }
-      .greet { font-size:34px; font-weight:700; }
+      body::before { content:""; position:fixed; inset:-12%; z-index:0; pointer-events:none;
+        background:
+          radial-gradient(38% 30% at 18% 8%, var(--glow), rgba(0,0,0,0) 70%),
+          radial-gradient(34% 28% at 84% 16%, var(--glow), rgba(0,0,0,0) 70%),
+          radial-gradient(30% 24% at 55% 96%, var(--glow), rgba(0,0,0,0) 70%);
+        filter:blur(28px); animation:drift 26s ease-in-out infinite alternate; }
+      body::after { content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:var(--stars);
+        transition:opacity 1.4s ease; animation:twinkle 5s ease-in-out infinite alternate;
+        background-image:
+          radial-gradient(1.6px 1.6px at 9% 18%, rgba(255,255,255,.95) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.2px 1.2px at 23% 64%, rgba(255,255,255,.8) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.8px 1.8px at 37% 9%, rgba(255,255,255,.9) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.2px 1.2px at 51% 38%, rgba(255,255,255,.75) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.5px 1.5px at 64% 14%, rgba(255,255,255,.9) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.2px 1.2px at 76% 52%, rgba(255,255,255,.8) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.7px 1.7px at 88% 26%, rgba(255,255,255,.95) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.2px 1.2px at 95% 70%, rgba(255,255,255,.75) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.3px 1.3px at 44% 82%, rgba(255,255,255,.8) 50%, rgba(0,0,0,0) 52%),
+          radial-gradient(1.3px 1.3px at 16% 88%, rgba(255,255,255,.8) 50%, rgba(0,0,0,0) 52%); }
+      @keyframes drift { from { transform:translate3d(-2.5%, -1.5%, 0) scale(1); } to { transform:translate3d(2.5%, 2%, 0) scale(1.07); } }
+      @keyframes twinkle { from { opacity:calc(var(--stars) * .72); } to { opacity:var(--stars); } }
+      main { max-width:1180px; width:100%; padding:36px 28px 56px; position:relative; z-index:1; }
+      .greet { font-size:38px; font-weight:700; }
       .greet .accent { color:var(--accent); }
       .sub { color:var(--dim); margin-top:4px; }
       .clock { font-size:15px; color:var(--clock); margin-top:10px; letter-spacing:1px; }
@@ -43,12 +64,34 @@ data:
       .cmd kbd { color:var(--faint); border:1px solid var(--border); border-bottom-width:2px; border-radius:6px;
                  padding:1px 7px; font-size:12px; font-family:inherit; }
       .nomatch { display:none; color:var(--faint); font-size:14px; margin-top:14px; text-align:center; }
-      .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px; }
+      .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)); gap:12px; margin-top:14px; }
+      @keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+      .grid > * { animation:rise .55s ease both; }
+      .grid > *:nth-child(2) { animation-delay:.05s; } .grid > *:nth-child(3) { animation-delay:.1s; }
+      .grid > *:nth-child(4) { animation-delay:.15s; } .grid > *:nth-child(5) { animation-delay:.2s; }
+      .grid > *:nth-child(6) { animation-delay:.25s; } .grid > *:nth-child(7) { animation-delay:.3s; }
+      .grid > *:nth-child(8) { animation-delay:.35s; }
+      .strip .stat { animation:rise .55s ease both; }
+      .lower { display:grid; grid-template-columns:1.55fr 1fr; gap:14px; margin-top:22px; align-items:start; }
+      .lower .panel { margin-top:0; }
+      .sidecol { display:grid; gap:14px; }
+      .sidecol .panel { margin-top:0; }
+      .panel svg rect.patrol { fill:none; animation:patrol 26s linear infinite; }
+      @keyframes patrol { to { stroke-dashoffset:-240; } }
+      @media (max-width:900px) { .lower { grid-template-columns:1fr; } }
+      @media (max-width:560px) {
+        main { padding:24px 14px 40px; }
+        .greet { font-size:29px; }
+        .grid { grid-template-columns:1fr 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        body::before, body::after, .grid > *, .strip .stat, .panel svg rect.patrol { animation:none; }
+      }
       a.door { position:relative; display:block; padding:16px; color:var(--ink); text-decoration:none; border-radius:16px;
                background:linear-gradient(160deg, var(--glassA), var(--glassB));
                border:1px solid var(--border); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
                transition:border-color .2s, transform .15s; }
-      a.door:hover, a.door:active { border-color:var(--accent); transform:translateY(-1px); }
+      a.door:hover, a.door:active { border-color:var(--accent); transform:translateY(-2px); box-shadow:0 10px 28px var(--glow); }
       a.door .icon { width:26px; height:26px; stroke:var(--accent); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
       a.door b { font-size:17px; display:block; margin-top:9px; }
       a.door span { color:var(--dim); font-size:13px; }
@@ -155,6 +198,7 @@ data:
         </div>
       </div>
 
+      <div class="lower">
       <div class="panel">
         <h2>The Estate</h2>
         <svg viewBox="0 0 600 356" width="100%" role="img" aria-label="Map of the Witch Hazel estate">
@@ -195,12 +239,13 @@ data:
           <rect x="358" y="198" width="186" height="52" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
           <text x="374" y="221" font-size="13" font-weight="600" fill="#e8eef7">USB Vault</text>
           <text x="374" y="239" font-size="10.5" fill="#93a5bd">restic · nightly 03:00</text>
-          <rect x="56" y="262" width="488" height="52" rx="12" fill="none" stroke="rgba(255,255,255,.22)" stroke-dasharray="5 5"/>
+          <rect class="patrol" x="56" y="262" width="488" height="52" rx="12" fill="none" stroke="rgba(255,255,255,.22)" stroke-dasharray="5 5"/>
           <text x="72" y="286" font-size="13" font-weight="600" fill="#e8eef7">Night-watchman</text>
           <text x="72" y="304" font-size="10.5" fill="#93a5bd">15 checks · every 30 minutes · reports by exception only</text>
         </svg>
       </div>
 
+      <div class="sidecol">
       <div class="panel facts">
         3 nodes Ready — master · worker1 · worker2<br>
         Kubernetes — k3s v1.37.2<br>
@@ -213,6 +258,8 @@ data:
       <div class="panel">
         <h2>Estate Feed</h2>
         <div class="feed" id="feed">The watchman has filed nothing yet.</div>
+      </div>
+      </div>
       </div>
       <footer>This page is a git commit.<br>If it ever breaks, ArgoCD puts it back.</footer>
     </main>
