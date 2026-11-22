@@ -119,6 +119,10 @@ data:
           <i class="dot unknown" data-door="photos" title="Checking status…"></i>
           <b>Photos</b><span>The family archive</span>
         </a>
+        <a class="door" href="https://192.168.1.21:30091" data-name="ArgoCD" data-keys="argocd gitops sync deploy applications git">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          <b>ArgoCD</b><span>The delivery engine</span>
+        </a>
       </div>
 
       <div class="panel">
@@ -151,7 +155,7 @@ data:
             <text x="198" y="185" text-anchor="middle" font-size="10.5" fill="#c8d6ea">102 worker1</text>
             <rect x="248" y="168" width="84" height="26" rx="8" fill="rgba(255,255,255,.06)"/>
             <text x="290" y="185" text-anchor="middle" font-size="10.5" fill="#c8d6ea">103 worker2</text>
-            <text x="72" y="223" font-size="11" fill="#93a5bd">Grafana · Demo App · Kuma · this page</text>
+            <text x="72" y="223" font-size="11" fill="#93a5bd">Grafana · Demo · Kuma · ArgoCD · this page</text>
           </a>
           <a href="http://192.168.1.24:2283">
             <rect x="358" y="132" width="186" height="54" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.16)"/>
